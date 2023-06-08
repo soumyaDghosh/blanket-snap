@@ -54,6 +54,10 @@ slots:
   blanket-mpris:
     interface: mpris
     name: Blanket
+  blanket:
+    interface: dbus
+    bus: session
+    name: com.rafaelmardojai.Blanket
 
 apps:
   blanket:
