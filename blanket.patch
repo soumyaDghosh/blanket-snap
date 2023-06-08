@@ -1,0 +1,23 @@
+diff -Naur a/data/com.rafaelmardojai.Blanket.desktop.in b/data/com.rafaelmardojai.Blanket.desktop.in
+--- a/data/com.rafaelmardojai.Blanket.desktop.in	2023-06-08 17:55:29.407907059 +0530
++++ b/data/com.rafaelmardojai.Blanket.desktop.in	2023-06-08 18:01:51.950211455 +0530
+@@ -2,7 +2,7 @@
+ Name=Blanket
+ Comment=Listen to different sounds
+ Exec=blanket
+-Icon=com.rafaelmardojai.Blanket
++Icon=snap.blanket.com.rafaelmardojai.Blanket
+ Terminal=false
+ Type=Application
+ # Translators: These are search terms to find this application. Do NOT translate or localize the semicolons. The list MUST also end with a semicolon.
+diff -Naur a/data/com.rafaelmardojai.Blanket.metainfo.xml.in b/data/com.rafaelmardojai.Blanket.metainfo.xml.in
+--- a/data/com.rafaelmardojai.Blanket.metainfo.xml.in	2023-06-08 17:55:08.519373455 +0530
++++ b/data/com.rafaelmardojai.Blanket.metainfo.xml.in	2023-06-08 18:02:13.462813678 +0530
+@@ -1,6 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <component type="desktop-application">
+   <id>com.rafaelmardojai.Blanket</id>
++  	<icon type="stock">snap.blanket.com.rafaelmardojai.Blanket</icon>
+   <metadata_license>CC0-1.0</metadata_license>
+   <project_license>GPL-3.0-or-later</project_license>
+   <name>Blanket</name>

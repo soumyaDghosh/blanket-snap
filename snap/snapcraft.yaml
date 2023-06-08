@@ -1,0 +1,81 @@
+name: blanket # you probably want to 'snapcraft register <name>'
+base: core22 # the base snap is the execution environment for this snap
+grade: stable # must be 'stable' to release into candidate/stable channels
+confinement: strict # use 'strict' once you have the right plugs and slots
+compression: lzo
+adopt-info: blanket
+parts:
+  blanket:
+    # See 'snapcraft plugins'
+    plugin: meson
+    source: https://github.com/rafaelmardojai/blanket.git
+    source-tag: '0.6.0'
+    meson-parameters:
+      - --prefix=/snap/blanket/current/usr
+    parse-info: [usr/share/metainfo/com.rafaelmardojai.Blanket.metainfo.xml] 
+    override-pull: |
+      craftctl default
+      patch -p1 < $CRAFT_PROJECT_DIR/blanket.patch
+    override-build: |
+      craftctl default
+      mkdir -p $CRAFT_PART_INSTALL/meta/gui
+      cp -r $CRAFT_PART_INSTALL/snap/blanket/current/usr/share/icons $CRAFT_PART_INSTALL/meta/gui/
+      for i in `find $CRAFT_PART_INSTALL/meta/gui/icons -name "*.svg" -o -name "*.png"`; do
+        mv $i "`dirname $i`/snap.$CRAFT_PROJECT_NAME.`basename $i`"
+      done
+    organize:
+      snap/blanket/current: .
+    prime:
+      - -snap/blanket
+  deps:
+    plugin: nil
+    stage-packages:
+      - libgstreamer-plugins-bad1.0-0
+      - gir1.2-gstreamer-1.0
+    prime:
+      - usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0/Gst-1.0.typelib
+      - usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0/GstBase-1.0.typelib
+      - usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0/GstCheck-1.0.typelib
+      - usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0/GstController-1.0.typelib
+      - usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0/GstNet-1.0.typelib
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstadaptivedemux-1.0.so.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstadaptivedemux-1.0.so.0.2001.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstbadaudio-1.0.so.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstbadaudio-1.0.so.0.2001.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstcodecparsers-1.0.so.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstcodecparsers-1.0.so.0.2001.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstcodecs-1.0.so.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstcodecs-1.0.so.0.2001.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstinsertbin-1.0.so.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstinsertbin-1.0.so.0.2001.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstisoff-1.0.so.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstisoff-1.0.so.0.2001.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstmpegts-1.0.so.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstmpegts-1.0.so.0.2001.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstplay-1.0.so.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstplay-1.0.so.0.2001.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstplayer-1.0.so.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstplayer-1.0.so.0.2001.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstsctp-1.0.so.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstsctp-1.0.so.0.2001.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgsttranscoder-1.0.so.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgsturidownloader-1.0.so.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgsturidownloader-1.0.so.0.2001.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstva-1.0.so.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstva-1.0.so.0.2001.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstwayland-1.0.so.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstwayland-1.0.so.0.2001.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstwebrtc-1.0.so.0
+      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstwebrtc-1.0.so.0.2001.0
+
+
+slots:
+  blanket-mpris:
+    interface: mpris
+    name: Blanket
+
+apps:
+  blanket:
+    command: usr/bin/blanket
+    extensions: [gnome]
+    common-id: com.rafaelmardojai.Blanket
