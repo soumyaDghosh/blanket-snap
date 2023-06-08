@@ -33,6 +33,7 @@ parts:
     stage-packages:
       - libgstreamer-plugins-bad1.0-0
       - gir1.2-gstreamer-1.0
+      - gir1.2-gst-plugins-bad-1.0 
   cleanup:
     after:  # Make this part run last; list all your other parts here
       - blanket
