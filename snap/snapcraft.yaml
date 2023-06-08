@@ -64,3 +64,4 @@ apps:
     command: usr/bin/blanket
     extensions: [gnome]
     common-id: com.rafaelmardojai.Blanket
+    autostart: blanket_blanket.desktop
