@@ -32,41 +32,20 @@ parts:
     stage-packages:
       - libgstreamer-plugins-bad1.0-0
       - gir1.2-gstreamer-1.0
-    prime:
-      - usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0/Gst-1.0.typelib
-      - usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0/GstBase-1.0.typelib
-      - usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0/GstCheck-1.0.typelib
-      - usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0/GstController-1.0.typelib
-      - usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0/GstNet-1.0.typelib
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstadaptivedemux-1.0.so.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstadaptivedemux-1.0.so.0.2001.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstbadaudio-1.0.so.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstbadaudio-1.0.so.0.2001.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstcodecparsers-1.0.so.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstcodecparsers-1.0.so.0.2001.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstcodecs-1.0.so.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstcodecs-1.0.so.0.2001.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstinsertbin-1.0.so.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstinsertbin-1.0.so.0.2001.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstisoff-1.0.so.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstisoff-1.0.so.0.2001.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstmpegts-1.0.so.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstmpegts-1.0.so.0.2001.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstplay-1.0.so.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstplay-1.0.so.0.2001.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstplayer-1.0.so.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstplayer-1.0.so.0.2001.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstsctp-1.0.so.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstsctp-1.0.so.0.2001.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgsttranscoder-1.0.so.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgsturidownloader-1.0.so.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgsturidownloader-1.0.so.0.2001.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstva-1.0.so.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstva-1.0.so.0.2001.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstwayland-1.0.so.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstwayland-1.0.so.0.2001.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstwebrtc-1.0.so.0
-      - usr/lib/$CRAFT_ARCH_TRIPLET/libgstwebrtc-1.0.so.0.2001.0
+  cleanup:
+    after:  # Make this part run last; list all your other parts here
+      - blanket
+      - deps
+    plugin: nil
+    build-snaps:  # List all content-snaps and base snaps you're using here
+      - gtk-common-themes
+      - gnome-42-2204
+      - core22
+    override-prime: |
+      set -eux
+      for snap in "core22" "gnome-42-2204" "gtk-common-themes"; do  # List all content-snaps and base snaps you're using here
+          cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \;
+      done
 
 
 slots:
