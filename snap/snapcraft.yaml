@@ -50,6 +50,10 @@ parts:
       done
 
 
+plugs:
+  shared-memory:
+    private: true
+
 slots:
   blanket-mpris:
     interface: mpris
@@ -65,3 +69,5 @@ apps:
     extensions: [gnome]
     common-id: com.rafaelmardojai.Blanket
     autostart: blanket_blanket.desktop
+    plugs:
+      - jack1
