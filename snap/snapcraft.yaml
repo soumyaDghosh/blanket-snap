@@ -71,3 +71,4 @@ apps:
     autostart: blanket_blanket.desktop
     plugs:
       - jack1
+      - pulseaudio
