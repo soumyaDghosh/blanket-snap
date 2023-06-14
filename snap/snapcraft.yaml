@@ -67,4 +67,3 @@ apps:
     autostart: blanket_blanket.desktop
     plugs:
       - audio-playback
-      - pulseaudio
