@@ -10,6 +10,7 @@ parts:
     plugin: meson
     source: https://github.com/rafaelmardojai/blanket.git
     source-tag: '0.6.0'
+    source-depth: 1
     meson-parameters:
       - --prefix=/snap/blanket/current/usr
     parse-info: [usr/share/metainfo/com.rafaelmardojai.Blanket.metainfo.xml] 
@@ -64,6 +65,5 @@ apps:
     command: usr/bin/blanket
     extensions: [gnome]
     common-id: com.rafaelmardojai.Blanket
-    autostart: blanket_blanket.desktop
     plugs:
       - audio-playback
