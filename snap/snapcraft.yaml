@@ -1,13 +1,13 @@
 name: blanket # you probably want to 'snapcraft register <name>'
-base: core22 # the base snap is the execution environment for this snap
+base: core24 # the base snap is the execution environment for this snap
 grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict # use 'strict' once you have the right plugs and slots
 compression: lzo
 adopt-info: blanket
-architectures:
-  - build-on: amd64
-  - build-on: arm64
-  - build-on: armhf
+platforms:
+  amd64:
+  arm64:
+  armhf:
 parts:
   blanket:
     # See 'snapcraft plugins'
@@ -17,10 +17,7 @@ parts:
     source-depth: 1
     meson-parameters:
       - --prefix=/snap/blanket/current/usr
-    parse-info: [usr/share/metainfo/com.rafaelmardojai.Blanket.metainfo.xml] 
-    override-pull: |
-      craftctl default
-      patch -p1 < $CRAFT_PROJECT_DIR/blanket.patch
+    parse-info: [usr/share/metainfo/com.rafaelmardojai.Blanket.metainfo.xml]
     override-build: |
       craftctl default
       mkdir -p $CRAFT_PART_INSTALL/meta/gui
@@ -31,14 +28,23 @@ parts:
       sed -e '1c#!/usr/bin/env python3' -i $CRAFT_PART_INSTALL/snap/blanket/current/usr/bin/blanket
     organize:
       snap/blanket/current: .
+
+  gpu-2404:
+    after: [blanket]
+    source: https://github.com/canonical/gpu-snap.git
+    plugin: dump
+    override-prime: |
+      craftctl default
+      ${CRAFT_PART_SRC}/bin/gpu-2404-cleanup mesa-2404
     prime:
-      - -snap/blanket
+    - -*
+
   deps:
     plugin: nil
     stage-packages:
       - libgstreamer-plugins-bad1.0-0
       - gir1.2-gstreamer-1.0
-      - gir1.2-gst-plugins-bad-1.0 
+      - gir1.2-gst-plugins-bad-1.0
   cleanup:
     after:  # Make this part run last; list all your other parts here
       - blanket
@@ -46,14 +52,9 @@ parts:
     plugin: nil
     build-snaps:  # List all content-snaps and base snaps you're using here
       - gtk-common-themes
-      - gnome-42-2204
-      - core22
-    override-prime: |
-      set -eux
-      for snap in "core22" "gnome-42-2204" "gtk-common-themes"; do  # List all content-snaps and base snaps you're using here
-          cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \;
-      done
-
+      - gnome-46-2404
+      - core24
+      - blueprint-compiler
 
 slots:
   blanket-mpris:
