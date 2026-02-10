@@ -1,7 +1,7 @@
-name: blanket # you probably want to 'snapcraft register <name>'
-base: core24 # the base snap is the execution environment for this snap
-grade: stable # must be 'stable' to release into candidate/stable channels
-confinement: strict # use 'strict' once you have the right plugs and slots
+name: blanket
+base: core24
+grade: stable
+confinement: strict
 compression: lzo
 adopt-info: blanket
 platforms:
@@ -10,7 +10,6 @@ platforms:
   armhf:
 parts:
   blanket:
-    # See 'snapcraft plugins'
     plugin: meson
     source: https://github.com/rafaelmardojai/blanket.git
     source-tag: '0.7.0'
@@ -29,28 +28,19 @@ parts:
     organize:
       snap/blanket/current: .
 
-  gpu-2404:
-    after: [blanket]
-    source: https://github.com/canonical/gpu-snap.git
-    plugin: dump
-    override-prime: |
-      craftctl default
-      ${CRAFT_PART_SRC}/bin/gpu-2404-cleanup mesa-2404
-    prime:
-    - -*
-
   deps:
     plugin: nil
     stage-packages:
       - libgstreamer-plugins-bad1.0-0
       - gir1.2-gstreamer-1.0
       - gir1.2-gst-plugins-bad-1.0
+
   cleanup:
-    after:  # Make this part run last; list all your other parts here
+    after:
       - blanket
       - deps
     plugin: nil
-    build-snaps:  # List all content-snaps and base snaps you're using here
+    build-snaps:
       - gtk-common-themes
       - gnome-46-2404
       - core24
