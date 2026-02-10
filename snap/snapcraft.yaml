@@ -12,7 +12,7 @@ parts:
   blanket:
     plugin: meson
     source: https://github.com/rafaelmardojai/blanket.git
-    source-tag: '0.7.0'
+    source-tag: '0.8.0'
     source-depth: 1
     meson-parameters:
       - --prefix=/snap/blanket/current/usr
